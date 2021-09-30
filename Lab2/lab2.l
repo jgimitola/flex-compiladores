@@ -13,8 +13,8 @@
     } Nodo_t;
     
     Nodo_t* ptr = NULL;
-    Nodo_t* ult = NULL;
-
+    Nodo_t* ult = NULL;   
+  
     void añadirId(char* text);
     void imprimirTabla();
 %}
@@ -103,7 +103,7 @@ PUNTO-COMA      ";"
 {STRING}				{ fprintf(yyout, "STRING"); }
 {INT}					{ fprintf(yyout, "INT"); }
 {DOUBLE}				{ fprintf(yyout, "DOUBLE"); }
-{IDENTIFICADOR}			{ fprintf(yyout, " Id=%s ", yytext); num_identificadores++; añadirId(yytext); }
+{IDENTIFICADOR}			{ fprintf(yyout, " Id=%s ", yytext); añadirId(yytext); }
 {CARACTERES_BLANCOS}+	{ ECHO; }
 .						{ fprintf(yyout, " ERROR_LEXICO=%s ", yytext); num_errores++; }
 <<EOF>> 				{ fprintf(yyout, "\n\nTABLA DE IDENTIFICADORES\n"); fprintf(yyout, "Hay %d identificadores | Ocurrieron %d errores\n", num_identificadores, num_errores); imprimirTabla(); return 0; } // Detenemos el programa al final del archivo
@@ -116,43 +116,40 @@ void añadirId(char* text) {
     int repetido = 0;
 
     while (!repetido && p != NULL) {
-        repetido = strcmp(p->id, text) == 0;
+        repetido = strcmp(p->id, text) == 0;       
         p = p->sgte;
     }
 
     if (!repetido) {
-        char* temp = "xd";
-        if (num_errores > 2) {
-            temp = "sde";
-        }
-        
         if (ptr == NULL) {
             ptr = (Nodo_t*) malloc(sizeof(Nodo_t));
-            ptr->id = temp;
+            ptr->id = malloc(strlen(text) + 1);
+            strcpy(ptr->id, text);  
             ptr->sgte = NULL;
             ult = ptr;
         } else {
             Nodo_t* nId = (Nodo_t*) malloc(sizeof(Nodo_t));
-            nId->id = temp;
+            nId->id = malloc(strlen(text) + 1);
+            strcpy(nId->id, text); 
             nId->sgte = NULL;
-
             ult->sgte = nId;
-            ult = nId;        
-        }        
+            ult = nId; 
+        }
+        num_identificadores++;          
     }    
 } 
 
 void imprimirTabla() {
     Nodo_t* p = ptr;
-    Nodo_t* a = NULL;
-    while (p != NULL) {
-        printf("%s ", p->id);
+    Nodo_t* a = NULL;    
+    while (p != NULL) {        
         sprintf(buff, "Id=%s, ", p->id);
-        strcat(lista_id, buff);
+        strcat(lista_id, buff);        
         a = p;        
-        p = p->sgte;        
+        p = p->sgte;   
         free(a);
     }    
+    fprintf(yyout, "%s", lista_id);
 }
 
 int yywrap() {}

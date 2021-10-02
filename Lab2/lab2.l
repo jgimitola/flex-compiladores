@@ -103,6 +103,28 @@ PUNTO-COMA      ";"
 {STRING}				{ fprintf(yyout, "STRING"); }
 {INT}					{ fprintf(yyout, "INT"); }
 {DOUBLE}				{ fprintf(yyout, "DOUBLE"); }
+{OP-MULT}               { fprintf(yyout, "Op-mult"); }
+{OP-SUM}                { fprintf(yyout, "Op-sum"); }
+{OP-SUST}               { fprintf(yyout, "Op-sust"); }
+{OP-DIV}                { fprintf(yyout, "Op-div"); }
+{OP-ASIGN}              { fprintf(yyout, "Op-asig"); }
+{OP-MOD}                { fprintf(yyout, "Op-mod"); }
+{OP-MASMAS}             { fprintf(yyout, "Op-MasMas"); }
+{OP-MENOSMENOS}         { fprintf(yyout, "Op-MenosMenos"); }
+{OP-MAYORIGUAL}         { fprintf(yyout, "Op-MayorIgual"); }
+{OP-DIFERENTE}          { fprintf(yyout, "Op-Diferente"); }
+{OP-MAYOR}              { fprintf(yyout, "Op-Mayor"); }
+{OP-MENOR}              { fprintf(yyout, "Op-Menor"); }
+{OP-Y}                  { fprintf(yyout, "Op-Y"); }
+{OP-O}                  { fprintf(yyout, "Op-O"); }
+{OP-NO}                 { fprintf(yyout, "Op-No"); }
+{LLAVE-A}               { fprintf(yyout, "Llave-a"); }
+{LLAVE-C}               { fprintf(yyout, "Llave-c"); }
+{CORCHETE-A}            { fprintf(yyout, "Corchete-a"); }
+{CORCHETE-C}            { fprintf(yyout, "Corchete-c"); }
+{PARENT-A}              { fprintf(yyout, "Parent-a"); }
+{PARENT-C}              { fprintf(yyout, "Parent-c"); }
+{PUNTO-COMA}            { fprintf(yyout, "Punto-coma"); }
 {IDENTIFICADOR}			{ fprintf(yyout, " Id=%s ", yytext); añadirId(yytext); }
 {CARACTERES_BLANCOS}+	{ ECHO; }
 .						{ fprintf(yyout, " ERROR_LEXICO=%s ", yytext); num_errores++; }

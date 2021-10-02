@@ -28,10 +28,12 @@ SIGNO           "+"|"-"
 
 IDENTIFICADOR	{LETRA}({LETRA}|{DIGITO})*
 CTE-ENT         {SIGNO}?{DIGITO}+
+CTE-ENT-ERR     {CTE-ENT}{LETRA}+
 EXPONENTE       ("E"|"e"){CTE-ENT}     
 PARTE-DECIMAL   \.{CTE-ENT}
 CTE-REAL        {CTE-ENT}{PARTE-DECIMAL}?{EXPONENTE}?
 CTE-CADENA      \"(\\\")*[^(\")]+(\\\")*\"
+COMENTARIO      ("/*"(.|\n)*"*/")|("//".*)
 
 /* Palabras Reservadas  */
 PUBLIC 			"public"
@@ -89,20 +91,21 @@ PUNTO-COMA      ";"
 
 /* REGLAS */
 %%
-{PUBLIC}				{ fprintf(yyout, "PUBLIC"); }
-{PRIVATE}				{ fprintf(yyout, "PRIVATE"); }
-{CLASS}					{ fprintf(yyout, "CLASS"); }
-{STATIC}				{ fprintf(yyout, "STATIC"); }
-{VOID}					{ fprintf(yyout, "VOID"); }
-{NEW}					{ fprintf(yyout, "NEW"); }
-{IF}					{ fprintf(yyout, "IF"); }
-{ELSE}					{ fprintf(yyout, "ELSE"); }
-{FOR}					{ fprintf(yyout, "FOR"); }
-{WHILE}					{ fprintf(yyout, "WHILE"); }
-{CHAR}					{ fprintf(yyout, "CHAR"); }
-{STRING}				{ fprintf(yyout, "STRING"); }
-{INT}					{ fprintf(yyout, "INT"); }
-{DOUBLE}				{ fprintf(yyout, "DOUBLE"); }
+{COMENTARIO}            { fprintf(yyout, "Comentario= %s ", yytext); }
+{PUBLIC}				{ fprintf(yyout, "PUBLIC "); }
+{PRIVATE}				{ fprintf(yyout, "PRIVATE "); }
+{CLASS}					{ fprintf(yyout, "CLASS "); }
+{STATIC}				{ fprintf(yyout, "STATIC "); }
+{VOID}					{ fprintf(yyout, "VOID "); }
+{NEW}					{ fprintf(yyout, "NEW "); }
+{IF}					{ fprintf(yyout, "IF "); }
+{ELSE}					{ fprintf(yyout, "ELSE "); }
+{FOR}					{ fprintf(yyout, "FOR "); }
+{WHILE}					{ fprintf(yyout, "WHILE "); }
+{CHAR}					{ fprintf(yyout, "CHAR "); }
+{STRING}				{ fprintf(yyout, "STRING "); }
+{INT}					{ fprintf(yyout, "INT "); }
+{DOUBLE}				{ fprintf(yyout, "DOUBLE "); }
 {OP-MULT}               { fprintf(yyout, "Op-mult= %s ", yytext); }
 {OP-SUM}                { fprintf(yyout, "Op-sum= %s ", yytext); }
 {OP-SUST}               { fprintf(yyout, "Op-sust= %s ", yytext); }
@@ -131,6 +134,7 @@ PUNTO-COMA      ";"
 {PARENT-A}              { fprintf(yyout, "Parent-a= %s ", yytext); }
 {PARENT-C}              { fprintf(yyout, "Parent-c= %s ", yytext); }
 {PUNTO-COMA}            { fprintf(yyout, "Punto-coma= %s ", yytext); }
+{CTE-ENT-ERR}           { fprintf(yyout, " ERROR_LEXICO=%s ", yytext); num_errores++; }
 {IDENTIFICADOR}			{ fprintf(yyout, "Id=%s ", yytext); añadirId(yytext); }
 {CTE-ENT}               { fprintf(yyout, "Cte-ent= %s ", yytext); }
 {CTE-REAL}              { fprintf(yyout, "Cte-real= %s ", yytext); }

@@ -31,7 +31,7 @@ CTE-ENT         {SIGNO}?{DIGITO}+
 EXPONENTE       ("E"|"e"){CTE-ENT}     
 PARTE-DECIMAL   \.{CTE-ENT}
 CTE-REAL        {CTE-ENT}{PARTE-DECIMAL}?{EXPONENTE}?
-CTE-CADENA      \".+\"
+CTE-CADENA      \"(\\\")*[^(\")]+(\\\")*\"
 
 /* Palabras Reservadas  */
 PUBLIC 			"public"
@@ -103,6 +103,9 @@ PUNTO-COMA      ";"
 {STRING}				{ fprintf(yyout, "STRING"); }
 {INT}					{ fprintf(yyout, "INT"); }
 {DOUBLE}				{ fprintf(yyout, "DOUBLE"); }
+{CTE-ENT}               { fprintf(yyout, "Cte-ent= %s", yytext); }
+{CTE-REAL}              { fprintf(yyout, "Cte-real= %s", yytext); }
+{CTE-CADENA}            { fprintf(yyout, "Cte-cadena= %s", yytext); } 
 {OP-MULT}               { fprintf(yyout, "Op-mult= %s", yytext); }
 {OP-SUM}                { fprintf(yyout, "Op-sum= %s", yytext); }
 {OP-SUST}               { fprintf(yyout, "Op-sust= %s", yytext); }

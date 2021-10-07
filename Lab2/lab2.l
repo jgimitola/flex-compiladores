@@ -5,18 +5,24 @@
     int num_errores = 0;
     int num_identificadores = 0;	
     char lista_id[10000];
+    char lista_err[10000];
     char buff[10000];
+    char buff2[10000];
 
     typedef struct Nodo {
         char* id;
         struct Nodo* sgte;
     } Nodo_t;
     
-    Nodo_t* ptr = NULL;
-    Nodo_t* ult = NULL;   
+    Nodo_t* ptrId = NULL;
+    Nodo_t* ultId = NULL;   
+    Nodo_t* ptrError = NULL;
+    Nodo_t* ultError = NULL;   
   
-    void añadirId(char* text);
-    void imprimirTabla();
+    void addIdToList(char* text);
+    void addErrToList(char* text);
+    void imprimirTablaID();
+    void imprimirTablaERR();
 %}
 
 /* DEFINICIONES REGULARES */
@@ -134,20 +140,21 @@ PUNTO-COMA      ";"
 {PARENT-A}              { fprintf(yyout, "Parent-a= %s ", yytext); }
 {PARENT-C}              { fprintf(yyout, "Parent-c= %s ", yytext); }
 {PUNTO-COMA}            { fprintf(yyout, "Punto-coma= %s ", yytext); }
-{CTE-ENT-ERR}           { fprintf(yyout, " ERROR_LEXICO=%s ", yytext); num_errores++; }
-{IDENTIFICADOR}			{ fprintf(yyout, "Id=%s ", yytext); añadirId(yytext); }
+{CTE-ENT-ERR}           { fprintf(yyout, " ERROR_LEXICO=%s ", yytext); addErrToList(yytext); }
+{IDENTIFICADOR}			{ fprintf(yyout, "Id=%s ", yytext); addIdToList(yytext); }
 {CTE-ENT}               { fprintf(yyout, "Cte-ent= %s ", yytext); }
 {CTE-REAL}              { fprintf(yyout, "Cte-real= %s ", yytext); }
 {CTE-CADENA}            { fprintf(yyout, "Cte-cadena= %s ", yytext); }
 {CARACTERES_BLANCOS}+	{ ECHO; }
-.						{ fprintf(yyout, " ERROR_LEXICO=%s ", yytext); num_errores++; }
-<<EOF>> 				{ fprintf(yyout, "\n\nTABLA DE IDENTIFICADORES\n"); fprintf(yyout, "Hay %d identificadores | Ocurrieron %d errores\n", num_identificadores, num_errores); imprimirTabla(); return 0; } // Detenemos el programa al final del archivo
+.						{ fprintf(yyout, " ERROR_LEXICO=%s ", yytext); addErrToList(yytext); }
+<<EOF>> 				{ fprintf(yyout, "\n\nTABLA DE IDENTIFICADORES\n"); fprintf(yyout, "Hay %d identificadores | Ocurrieron %d errores\n", num_identificadores, num_errores); imprimirTablaID(); imprimirTablaERR(); return 0; } // Detenemos el programa al final del archivo
 %%
 
 /* FUNCIONES AUXILIARES */
 
-void añadirId(char* text) {   
-    Nodo_t* p = ptr;
+void addIdToList(char* text) {
+    Nodo_t* p = ptrId;
+
     int repetido = 0;
 
     while (!repetido && p != NULL) {
@@ -156,42 +163,73 @@ void añadirId(char* text) {
     }
 
     if (!repetido) {
-        if (ptr == NULL) {
-            ptr = (Nodo_t*) malloc(sizeof(Nodo_t));
-            ptr->id = malloc(strlen(text) + 1);
-            strcpy(ptr->id, text);  
-            ptr->sgte = NULL;
-            ult = ptr;
+        if (ptrId == NULL) {
+            ptrId = (Nodo_t*) malloc(sizeof(Nodo_t));
+            ptrId->id = malloc(strlen(text) + 1);
+            strcpy(ptrId->id, text);  
+            ptrId->sgte = NULL;
+            ultId = ptrId;
         } else {
             Nodo_t* nId = (Nodo_t*) malloc(sizeof(Nodo_t));
             nId->id = malloc(strlen(text) + 1);
             strcpy(nId->id, text); 
             nId->sgte = NULL;
-            ult->sgte = nId;
-            ult = nId; 
+            ultId->sgte = nId;
+            ultId = nId; 
         }
-        num_identificadores++;          
-    }    
-} 
+        num_identificadores++;
+    }      
+}
 
-void imprimirTabla() {
-    Nodo_t* p = ptr;
+void addErrToList(char* text) {
+    Nodo_t* p = ptrError;
+    
+    if (ptrError == NULL) {
+        ptrError = (Nodo_t*) malloc(sizeof(Nodo_t));
+        ptrError->id = malloc(strlen(text) + 1);
+        strcpy(ptrError->id, text);  
+        ptrError->sgte = NULL;
+        ultError = ptrError;
+    } else {
+        Nodo_t* nId = (Nodo_t*) malloc(sizeof(Nodo_t));
+        nId->id = malloc(strlen(text) + 1);
+        strcpy(nId->id, text); 
+        nId->sgte = NULL;
+        ultError->sgte = nId;
+        ultError = nId; 
+    }
+    num_errores++;
+        
+}
+
+void imprimirTablaID() {
+    Nodo_t* p = ptrId;
     Nodo_t* a = NULL;    
     while (p != NULL) {        
-        sprintf(buff, "Id=%s, ", p->id);
+        sprintf(buff, "Id=%s, ", p->id);        
         strcat(lista_id, buff);        
         a = p;        
         p = p->sgte;   
         free(a);
     }    
-    fprintf(yyout, "%s", lista_id);
+    fprintf(yyout, "%s\n", lista_id);
+}
+
+void imprimirTablaERR() {
+    Nodo_t* p = ptrError;
+    Nodo_t* a = NULL;
+    while (p != NULL) {        
+        sprintf(buff2, "ERROR_LEXICO=%s, ", p->id);
+        strcat(lista_err, buff2);        
+        a = p;        
+        p = p->sgte;   
+        free(a);
+    }    
+    fprintf(yyout, "%s\n", lista_err);
 }
 
 int yywrap() {}
-int main(int argc, char* argv[]) {	
-    //char filename[50];
-    //printf("Escriba nombre de archivo (prueba.extension): \n");
-    //scanf("%s", filename);
+int main(int argc, char* argv[]) {	 
     
     yyin = fopen(argv[1], "r"); // Archivo de entrada
     yyout = fopen("salida.txt", "w"); // Archivo de salida

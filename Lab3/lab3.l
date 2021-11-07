@@ -3,6 +3,7 @@
 	#include "y.tab.h"
 	#include<stdio.h>
 	int linea = 0;
+    
 
    /* #include <string.h>
 
@@ -28,6 +29,8 @@
     void imprimirTablaID();
     void imprimirTablaERR();*/
 %}
+
+%option noyywrap
 
 /* DEFINICIONES REGULARES */
 
@@ -151,6 +154,7 @@ PUNTO_COMA      ";"
 \n						{linea++;}
 " "						{;}
 \t						{;}
+
 %%
 /*
 .					{ fprintf(yyout, " ERROR_LEXICO=%s ", yytext); addErrToList(yytext); }

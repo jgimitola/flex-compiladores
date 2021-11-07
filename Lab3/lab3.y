@@ -62,34 +62,84 @@ void yyerror(const char *s);
 %start INICIO
 
 %%
-    INICIO: ;
+    INICIO: 
+        MODIFICADOR CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
+        | error {yyerrok;yyclearin;} 
+        |
+        ;
+    
+        
+    CUERPOCLASE: 
+        DECGLOBAL CUERPOCLASE         
+        | DECMETODOS CUERPOCLASE
+        |
+        ;
+        
 
+    DECGLOBAL: 
+        MODIFICADOR DECVAR PUNTO_COMA
+        ;
+        
+    DECMETODOS:
+        MODIFICADOR TIPO IDENTIFICADOR PARENT_A PARENT_C LLAVE_A BLOQUE LLAVE_C
+        | MODIFICADOR VOID IDENTIFICADOR PARENT_A PARENT_C LLAVE_A BLOQUE LLAVE_C
+        ;
+
+    BLOQUE:
+        DECVAR PUNTO_COMA BLOQUE
+        | 
+        ;
+
+    DECVAR:
+        TIPO IDENTIFICADOR
+        ;
+
+    TIPO: 
+        CHAR 
+        | STRING 
+        | INT 
+        | DOUBLE
+        ;
+
+    MODIFICADOR: 
+        PUBLIC PERTENECECLASE 
+        | PRIVATE PERTENECECLASE 
+        | PERTENECECLASE 
+        ;
+
+    PERTENECECLASE:
+        STATIC
+        | 
+        ;
+    
 
 
 %%
 
 void yyerror(const char *s){
-    fprintf(yyout, "Error sintactico en la linea numero: %d", linea+1);
-    fprintf(stderr, "Error sintactico en la linea numero: %d", linea+1);
+    fprintf(yyout, "\nError sintactico en la linea numero: %d", linea+1);
+    fprintf(stderr, "\nError sintactico en la linea numero: %d", linea+1);
     errores++;
 }
 
-int main(int argc, char *argv[]){
-    printf("Por lo menos entro");
+int main(int argc, char *argv[]){    
     if (argc==2) {
         yyin = fopen(argv[1], "r");
-        yyout = fopen("salida.txt", "w");
+        yyout = fopen("saliday.txt", "w");
         
         if (yyin == NULL) {
             printf("No se pudo abrir el archivo %s \n", argv[1]);
             exit(-1);
-        }else{
-            while(!feof(yyin)){
-                yyparse();
+        }else{            
+            while(!feof(yyin)){                
+                yyparse();               
             }
             if(errores == 0 ){
-                fprintf(yyout, "Prueba con el archivo de entrada \n Bien");
-                fprintf(stderr, "Prueba con el archivo de entrada \n Bien");
+                fprintf(yyout, "\nPrueba con el archivo de entrada \nBien\n");
+                fprintf(stderr, "\nPrueba con el archivo de entrada \nBien\n");
+            }else{
+                fprintf(yyout, "\nEl archivo de entrada tiene %d errores sintacticos. \n",errores);
+                fprintf(stderr,"\nEl archivo de entrada tiene %d errores sintacticos. \n",errores);
             }
         }
     }

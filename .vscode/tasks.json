@@ -6,12 +6,12 @@
     {
       "label": "l2",
       "type": "shell",
-      "command": "sh ./scripts/build-run.sh 2"
+      "command": "sh ./scripts/build-lab2-run.sh"
     },
     {
       "label": "l3",
       "type": "shell",
-      "command": "sh ./scripts/build-run.sh 3"
+      "command": "sh ./scripts/build-lab3-run.sh"
     }
   ]
 }

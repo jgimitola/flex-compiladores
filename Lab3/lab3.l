@@ -101,6 +101,7 @@ CORCHETE_C      "]"
 PARENT_A        "("
 PARENT_C        ")"
 PUNTO_COMA      ";"
+COMA            ","
 
 /* REGLAS */
 %%
@@ -147,6 +148,7 @@ PUNTO_COMA      ";"
 {PARENT_A}              { return PARENT_A;}
 {PARENT_C}              { return PARENT_C;}
 {PUNTO_COMA}            { return PUNTO_COMA;}
+{COMA}                  { return COMA;}
 {IDENTIFICADOR}			{ return IDENTIFICADOR;}
 {CTE_ENT}               { return CTE_ENT;}
 {CTE_REAL}              { return CTE_REAL;}

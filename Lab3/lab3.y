@@ -265,10 +265,12 @@ void yyerror(const char *s);
 
     OPERADORES:
         IDENTIFICADOR
+        | OP_SUM NUMEROS
+        | OP_SUST NUMEROS
         | CONSTANTE
 
     CONSTANTE:        
-        | CTE_CADENA
+        CTE_CADENA
         | NUMEROS
     
     NUMEROS:

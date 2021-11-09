@@ -60,6 +60,7 @@ void yyerror(const char *s);
 %token CTE_ENT
 %token CTE_REAL
 %token CTE_CADENA
+%token CTE_NUMERO
 %start INICIO
 
 %%
@@ -152,10 +153,7 @@ void yyerror(const char *s);
         OP_ASIGN NEW TIPO CORCHETE_A CONSTANTE CORCHETE_C CORCHETE_A CONSTANTE CORCHETE_C 
         ;
 
-    CONSTANTE:
-        CTE_CADENA
-        | CTE_ENT
-        | CTE_REAL
+    
         
 
 
@@ -184,11 +182,16 @@ void yyerror(const char *s);
         | OP_ENTREASIGN
         | OP_PORASIGN
     
-    ARITMETICA:        
-        OPERADORES OPARITMETICA OPERADORES
-        | PARENT_A ARITMETICA PARENT_C
-        | OPERADORES
-    
+    ARITMETICA:
+        PARENT_A ARITMETICA PARENT_C ARITMETICA2
+        | OPERADORES ARITMETICA2
+        
+    ARITMETICA2:
+        OPARITMETICA ARITMETICA
+        |
+        ;
+        
+        
         
 
     IGUALDAD:
@@ -213,7 +216,10 @@ void yyerror(const char *s);
         IDENTIFICADOR
         | CONSTANTE
 
-    
+    CONSTANTE:
+        CTE_ENT
+        | CTE_CADENA
+        | CTE_REAL
     
 
 

@@ -36,17 +36,19 @@
 
 
 DIGITO			[0-9]
-LETRA			[a-zA-Z]
+LETRA			[a-zA-Z]          
+
 SIGNO           "+"|"-"
 
 IDENTIFICADOR	{LETRA}({LETRA}|{DIGITO})*
-CTE_ENT         {SIGNO}?{DIGITO}+
-CTE_ENT_ERR     {CTE_ENT}{LETRA}+
-EXPONENTE       ("E"|"e"){CTE_ENT}     
+CTE_ENT         {DIGITO}+
+CTE_ENT_ERR     {CTE_ENT}{LETRA}+   
 PARTE_DECIMAL   \.{CTE_ENT}
-CTE_REAL        {CTE_ENT}{PARTE_DECIMAL}?{EXPONENTE}?
+EXPONENTE       (("E"|"e")("+"|"-"){CTE_ENT})
+CTE_REAL        {CTE_ENT}{PARTE_DECIMAL}{EXPONENTE}?
 CTE_CADENA      \"(\\\")*[^(\")]+(\\\")*\"
 COMENTARIO      ("/*"(.|\n)*"*/")|("//".*)
+CTE_NUMERO      ("+"|"-")({CTE_ENT}|{CTE_REAL})
 
 /* Palabras Reservadas  */
 PUBLIC 			"public"
@@ -105,6 +107,7 @@ COMA            ","
 
 /* REGLAS */
 %%
+
 {COMENTARIO}            { return COMENTARIO;}
 {PUBLIC}				{ return PUBLIC;}
 {PRIVATE}				{ return PRIVATE;}
@@ -153,6 +156,7 @@ COMA            ","
 {CTE_ENT}               { return CTE_ENT;}
 {CTE_REAL}              { return CTE_REAL;}
 {CTE_CADENA}            { return CTE_CADENA;}
+{CTE_NUMERO}            {return CTE_NUMERO;}
 \n						{linea++;}
 " "						{;}
 \t						{;}

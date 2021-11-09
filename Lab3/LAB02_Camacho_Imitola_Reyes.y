@@ -303,9 +303,9 @@ int main(int argc, char *argv[]){
             printf("No se pudo abrir el archivo %s \n", argv[1]);
             exit(-1);
         }else{            
-            while(!feof(yyin)){                
+                           
                 yyparse();               
-            }
+            
             if(errores == 0 ){
                 fprintf(yyout, "\nPrueba con el archivo de entrada \nBien\n");
                 fprintf(stderr, "\nPrueba con el archivo de entrada \nBien\n");

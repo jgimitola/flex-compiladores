@@ -61,13 +61,14 @@ void yyerror(const char *s);
 %token CTE_REAL
 %token CTE_CADENA
 
+
 %start INICIO
 
 %%
     INICIO: 
         MODIFICADOR CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
         | COMENTARIO INICIO
-        | error {yyerrok;yyclearin;} 
+        | error {yyerrok; yyclearin;}
         |
         ;
     
@@ -82,13 +83,14 @@ void yyerror(const char *s);
 
     DECGLOBAL: 
         MODIFICADOR DECVAR PUNTO_COMA
-        | error {yyerrok;yyclearin;} 
+        
         ;
 
         
     DECMETODOS:        
         MODIFICADOR TIPO IDENTIFICADOR PARENT_A PARAMETROS PARENT_C LLAVE_A BLOQUE LLAVE_C
         | MODIFICADOR VOID IDENTIFICADOR PARENT_A PARAMETROS PARENT_C LLAVE_A BLOQUE LLAVE_C
+        
         
         
     
@@ -104,11 +106,11 @@ void yyerror(const char *s);
 
 
     BLOQUE:
-        DECVAR PUNTO_COMA BLOQUE ;
-        | DECARRAYSININICIAR PUNTO_COMA BLOQUE ;
-        | DECARRAYS PUNTO_COMA BLOQUE ;
-        | ASIGNVARIABLE PUNTO_COMA BLOQUE ;
-        | COMENTARIO BLOQUE ;
+        DECVAR PUNTO_COMA BLOQUE
+        | DECARRAYSININICIAR PUNTO_COMA BLOQUE
+        | DECARRAYS PUNTO_COMA BLOQUE
+        | ASIGNVARIABLE PUNTO_COMA BLOQUE
+        | COMENTARIO BLOQUE
         | CICLO_FOR BLOQUE
         | CICLO_WHILE BLOQUE
         | CONDICIONAL_IF BLOQUE        
@@ -119,19 +121,17 @@ void yyerror(const char *s);
 
 
     DECVAR:    
-        TIPO MULTIID        
-        ;
-    
-    
-    
+        TIPO MULTIID 
+
     MULTIID:
         IDENTIFICADOR
-        | ASIGNVARIABLE
-        | IDENTIFICADOR COMA MULTIID
-        | ASIGNVARIABLE COMA MULTIID
+        | IDENTIFICADOR OP_ASIGN OPERACION 
+        | IDENTIFICADOR COMA MULTIID       
+        | IDENTIFICADOR OP_ASIGN OPERACION COMA MULTIID
 
     ASIGNVARIABLE:        
         IDENTIFICADOR ASIGNACION OPERACION
+        ;
         
             
         
@@ -142,6 +142,7 @@ void yyerror(const char *s);
         | TIPO CORCHETE_A CORCHETE_C IDENTIFICADOR 
         | TIPO IDENTIFICADOR CORCHETE_A CORCHETE_C CORCHETE_A CORCHETE_C   
         | TIPO CORCHETE_A CORCHETE_C CORCHETE_A CORCHETE_C IDENTIFICADOR ;
+        
 
 
     DECARRAYS:
@@ -176,10 +177,12 @@ void yyerror(const char *s);
     
     CICLO_WHILE:
         WHILE PARENT_A CONDICION PARENT_C LLAVE_A BLOQUE LLAVE_C
-
+       
+        
     CONDICIONAL_IF:
         IF PARENT_A CONDICION PARENT_C LLAVE_A BLOQUE LLAVE_C
         | IF PARENT_A CONDICION PARENT_C LLAVE_A BLOQUE LLAVE_C ELSE LLAVE_A BLOQUE LLAVE_C
+        
     
 
 
@@ -188,7 +191,6 @@ void yyerror(const char *s);
         | STRING 
         | INT 
         | DOUBLE
-        ;
 
     MODIFICADOR: 
         PUBLIC PERTENECECLASE 
@@ -215,7 +217,7 @@ void yyerror(const char *s);
     OPERACION2:
         OPOPERACION OPERACION
         |
-        ;    
+        ;   
     
     CONDICION:
         IGUALDAD CONDICION2
@@ -233,12 +235,14 @@ void yyerror(const char *s);
     IGUALDAD:        
         PARENT_A IGUALDAD PARENT_C IGUALDAD2
         | OPERACION IGUALDAD2
+        | PARENT_A IGUALDAD PARENT_C
 
     
     IGUALDAD2:
         OPIGUALDADES IGUALDAD
         | 
         OPIGUALDADES OPERADORES
+
     
     OPOPERACION:
         OP_SUM

@@ -84,6 +84,7 @@ OP_ENTREASIGN   "/="
 
 /* Operadores Relacionales */
 OP_IGUAL        "=="
+
 OP_MENORIGUAL   "<="
 OP_MAYORIGUAL   ">="
 OP_DIFERENTE    "<>"|"!="

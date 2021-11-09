@@ -115,9 +115,11 @@ void yyerror(const char *s);
     
 
 
-    DECVAR:
+    DECVAR:    
         TIPO MULTIID        
         ;
+    
+    
     
     MULTIID:
         IDENTIFICADOR

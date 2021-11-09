@@ -290,7 +290,7 @@ void yyerror(const char *s);
 
 void yyerror(const char *s){
     fprintf(yyout, "\nError sintactico en la linea numero: %d", linea+1);
-    fprintf(stderr, "\nError sintactico en la linea numero: %d", linea+1);
+    
     errores++;
 }
 
@@ -308,10 +308,10 @@ int main(int argc, char *argv[]){
             
             if(errores == 0 ){
                 fprintf(yyout, "\nPrueba con el archivo de entrada \nBien\n");
-                fprintf(stderr, "\nPrueba con el archivo de entrada \nBien\n");
+                
             }else{
                 fprintf(yyout, "\nEl archivo de entrada tiene %d errores sintacticos. \n",errores);
-                fprintf(stderr,"\nEl archivo de entrada tiene %d errores sintacticos. \n",errores);
+                
             }
         }
     }

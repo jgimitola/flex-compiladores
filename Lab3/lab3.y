@@ -66,7 +66,8 @@ void yyerror(const char *s);
 
 %%
     INICIO: 
-        MODIFICADOR CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
+        PUBLIC CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
+        | PRIVATE CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
         | COMENTARIO INICIO
         | error {yyerrok; yyclearin;}
         |
@@ -101,6 +102,8 @@ void yyerror(const char *s);
         | DECARRAYSININICIAR
         | TIPO IDENTIFICADOR COMA PARAMETROS    
         | DECARRAYSININICIAR COMA PARAMETROS
+        |
+        ;
         
         
 

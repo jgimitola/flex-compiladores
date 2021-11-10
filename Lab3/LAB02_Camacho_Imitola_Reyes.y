@@ -69,6 +69,7 @@ void yyerror(const char *s);
         PUBLIC CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
         | PRIVATE CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
         | COMENTARIO INICIO
+        | error CUERPOCLASE LLAVE_C
         |
         ;
     
@@ -77,7 +78,7 @@ void yyerror(const char *s);
         DECGLOBAL CUERPOCLASE         
         | DECMETODOS CUERPOCLASE
         | COMENTARIO CUERPOCLASE
-        | error {yyerrok; yyclearin;} CUERPOCLASE
+        | error CUERPOCLASE
         |
         ;
         
@@ -91,6 +92,7 @@ void yyerror(const char *s);
     DECMETODOS:        
         MODIFICADOR TIPO IDENTIFICADOR PARENT_A PARAMETROS PARENT_C LLAVE_A BLOQUE LLAVE_C
         | MODIFICADOR VOID IDENTIFICADOR PARENT_A PARAMETROS PARENT_C LLAVE_A BLOQUE LLAVE_C
+        | error LLAVE_A BLOQUE LLAVE_C
         
         
         
@@ -117,7 +119,7 @@ void yyerror(const char *s);
         | CICLO_FOR BLOQUE
         | CICLO_WHILE BLOQUE
         | CONDICIONAL_IF BLOQUE
-        | error {yyerrok; yyclearin;} BLOQUE        
+        | error BLOQUE        
         |
         ;     
         

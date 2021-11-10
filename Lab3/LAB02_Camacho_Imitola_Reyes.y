@@ -69,7 +69,6 @@ void yyerror(const char *s);
         PUBLIC CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
         | PRIVATE CLASS IDENTIFICADOR LLAVE_A CUERPOCLASE LLAVE_C 
         | COMENTARIO INICIO
-        | error {yyerrok; yyclearin;}
         |
         ;
     
@@ -78,6 +77,7 @@ void yyerror(const char *s);
         DECGLOBAL CUERPOCLASE         
         | DECMETODOS CUERPOCLASE
         | COMENTARIO CUERPOCLASE
+        | error {yyerrok; yyclearin;} CUERPOCLASE
         |
         ;
         
@@ -116,7 +116,8 @@ void yyerror(const char *s);
         | COMENTARIO BLOQUE
         | CICLO_FOR BLOQUE
         | CICLO_WHILE BLOQUE
-        | CONDICIONAL_IF BLOQUE        
+        | CONDICIONAL_IF BLOQUE
+        | error {yyerrok; yyclearin;} BLOQUE        
         |
         ;     
         
@@ -304,7 +305,8 @@ int main(int argc, char *argv[]){
             exit(-1);
         }else{            
                            
-                yyparse();               
+            yyparse(); 
+
             
             if(errores == 0 ){
                 fprintf(yyout, "\nPrueba con el archivo de entrada \nBien\n");
@@ -314,5 +316,10 @@ int main(int argc, char *argv[]){
                 
             }
         }
+    }else{
+        printf("Debe escribir el nombre del archivo que quiere analizar");
+        exit(-1);
+
     }
+    
 }
